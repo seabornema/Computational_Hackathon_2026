@@ -22,7 +22,7 @@ using namespace std;
   
 
 const int win_size = 800;
-const double dt = 0.0002;
+const double dt = 0.02;
 
 const double box_size = 4.0;
 
@@ -62,6 +62,17 @@ void initialize_scene(int n,vector<Particle>& particles,double pos_range,double 
 
 
 
+void spawn_particle(int n,vector<Particle>& particles,Vector2 point,Vector2 pos_range,Vector2 velo_range) {
+    for(int i = 0; i < n; i++) {
+    double xpos= point.x + random_range(-pos_range.x,pos_range.x);
+    double ypos = point.y + random_range(-pos_range.y,pos_range.y);
+    double xvelo = random_range(-velo_range.x,velo_range.x);
+    double yvelo = random_range(-velo_range.y,velo_range.y);
+    particles.push_back({{xpos, ypos},{xvelo, yvelo}});
+    }
+}
+
+
 void full_sweep(int n) {
     for (Particle &p : particles) p.evolve();
 }
@@ -85,7 +96,14 @@ int main() {
             window.draw(circle);
            
         }
-        
+  
+        spawn_particle(1,particles,
+            {1.0,1.0},  //spawnpoint
+            {0.1,0.1},  //spawn range x and y
+            {1.0,1.0}  //velocity range x and y
+            );
+
+
         window.display();
         sf::sleep(sf::milliseconds(1));
     }
