@@ -30,6 +30,8 @@ const double velo_range = 0;
 const double pos_range = 0;
 const int n =200;
 
+const 
+      sf::VertexArray first_path(sf::LineStrip, n + 1);
 
 struct Vector2 { double x, y; };
 
@@ -37,6 +39,14 @@ struct Particle {
     Vector2 pos, velo;
     sf::Color col = sf::Color::Blue;
     void evolve() {
+      if(pos.x > 3.0 || pos.x < 1.0){
+        if(pos.y < 3.0) velo.x *= -1.0;
+      }
+      if(pos.y < 1.0) {
+        velo.y *= -1.0;
+      }
+
+
       pos.x+= velo.x*dt;
       pos.y += velo.y*dt;
     }
@@ -77,18 +87,36 @@ void full_sweep(int n) {
     for (Particle &p : particles) p.evolve();
 }
 
+vector<sf::Vector2f> rocket_body_points = {{1.0*(win_size / box_size),3.0*(win_size / box_size)},{1.0*(win_size / box_size),1.0*(win_size / box_size)},{3.0*(win_size / box_size),1.0*(win_size / box_size)},{3.0*(win_size / box_size),3.0*(win_size / box_size)}};
+
 int main() {
     srand(time(0));
-    initialize_scene(n,particles,box_size,0.1);
     sf::RenderWindow window(sf::VideoMode(win_size, win_size), "Particles");
+
+    
+
+
+    sf::VertexArray path(sf::LineStrip, 4);
+    for (int i = 0; i < 4; ++i) {
+        path[i].position  = rocket_body_points[i];
+        path[i].color     = sf::Color::White;
+    }
+
+
+
+
+
 
     while (window.isOpen()) {
         sf::Event e;
         while (window.pollEvent(e))
             if (e.type == sf::Event::Closed) window.close();
-
         full_sweep(n);
         window.clear(sf::Color::Black);
+
+
+        window.draw(path);
+
         for (Particle &p : particles) {
             sf::CircleShape circle(2);
             circle.setPosition(p.pos.x * (win_size / box_size),
@@ -98,7 +126,7 @@ int main() {
         }
   
         spawn_particle(1,particles,
-            {1.0,1.0},  //spawnpoint
+            {2.0,2.0},  //spawnpoint
             {0.1,0.1},  //spawn range x and y
             {1.0,1.0}  //velocity range x and y
             );
