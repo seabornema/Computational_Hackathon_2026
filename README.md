@@ -2,5 +2,14 @@ Simulation of a rocket engine's combustion chamber for the NCSU Computational Ph
 
 
 
+
+
+This is main.cpp running
 https://github.com/user-attachments/assets/15082581-058a-49bf-b230-d47f40d92d29
+
+
+This is main_improved.cpp running, the color of the particle is it's pressure.
+
+
+https://github.com/user-attachments/assets/dd4e6b04-dbff-467e-97da-1f8a8e44749a
 
